@@ -1,0 +1,16 @@
+name: Deploy Pre-Production
+
+on:
+  push:
+    branches:
+      - pre-production
+
+jobs:
+  sync:
+    runs-on: ubuntu-slim
+    permissions:
+      contents: write
+    steps:
+      - name: deploy
+        run: |
+          echo "✅ deploy pre-production"
