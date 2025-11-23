@@ -24,8 +24,4 @@ gh pr create \
   --title "hotfix $(date +"%Y-%m-%dT%H:%M:%S")" \
   --body ""
 
-git fetch --prune
-git switch production
-git pull origin production
-
 git switch main
