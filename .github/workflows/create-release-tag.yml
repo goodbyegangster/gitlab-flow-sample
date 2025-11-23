@@ -1,0 +1,64 @@
+name: Create Release Tag
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - production
+
+jobs:
+  create-release:
+    # pre-production から production へのマージ時のみ実行
+    if: |
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.ref == 'pre-production'
+
+    runs-on: ubuntu-slim
+    permissions:
+      contents: write  # タグ・リリース作成に必要
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 全タグを取得
+          ref: production  # production ブランチをチェックアウト
+
+      - name: Generate tag name
+        id: tag
+        run: |
+          # JST で日付取得
+          DATE=$(TZ=Asia/Tokyo date +"%Y-%m-%d")
+
+          # その日の既存タグを取得して連番を決定
+          PREFIX="${DATE}"
+          EXISTING_TAGS=$(git tag -l "${PREFIX}-*" | sort -V)
+
+          if [ -z "$EXISTING_TAGS" ]; then
+            SEQUENCE="001"
+          else
+            LAST_TAG=$(echo "$EXISTING_TAGS" | tail -n 1)
+            LAST_NUM=$(echo "$LAST_TAG" | awk -F'-' '{print $NF}')
+            SEQUENCE=$(printf "%03d" $((10#$LAST_NUM + 1)))
+          fi
+
+          TAG_NAME="${PREFIX}-${SEQUENCE}"
+          echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "Generated tag: ${TAG_NAME}"
+
+      - name: Create and push tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "${{ steps.tag.outputs.tag_name }}"
+          git push origin "${{ steps.tag.outputs.tag_name }}"
+
+      - name: Create GitHub Release (draft)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.tag.outputs.tag_name }}" \
+            --draft \
+            --title "Release ${{ steps.tag.outputs.tag_name }}" \
+            --notes "Merged pre-production to production on $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S %Z')" \
+            --target production

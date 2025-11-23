@@ -2,13 +2,15 @@
 
 ## ブランチ戦略
 
-| ブランチ名     | 派生元ブランチ | merge 先ブランチ | merge 方法         |
-| -------------- | -------------- | ---------------- | ------------------ |
-| main           | －             | pre-production   | fast-forward merge |
-| pre-production | －             | production       | merge commit (PR)  |
-| production     | －             | －               | －                 |
-| feature/\*     | main           | main             | squash commit (PR) |
-| hotfix/\*      | production     | production       | merge commit (PR)  |
+| ブランチ名     | 役割                          | 保持期間 | 派生元ブランチ | merge 先ブランチ | merge 方法         | デプロイ先環境 |
+| -------------- | ----------------------------- | -------- | -------------- | ---------------- | ------------------ | -------------- |
+| main           |                               | 永久     | －             | pre-production   | fast-forward merge | －             |
+| pre-production | pre-production 環境向けコード | 永久     | －             | production       | merge commit (PR)  | pre-production |
+| production     | production 環境向けコード     | 永久     | －             | －               | －                 | production     |
+| feature/\*     | 新規開発作業用                | 短期     | main           | main             | squash commit (PR) | －             |
+| hotfix/\*      |                               | 短期     | production     | production       | merge commit (PR)  | －             |
+| staging        | staging 環境向けコード        | 永久     | main           | －               | －                 | staging        |
+| development    | development 環境向けコード    | 永久     | main           | －               | －                 | development    |
 
 ##
 
