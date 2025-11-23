@@ -59,6 +59,7 @@ jobs:
         run: |
           gh release create "${{ steps.tag.outputs.tag_name }}" \
             --draft \
-            --title "Release ${{ steps.tag.outputs.tag_name }}" \
+            --title "${{ steps.tag.outputs.tag_name }}" \
+            --generate-notes \
             --notes "Merged pre-production to production on $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S %Z')" \
             --target production
