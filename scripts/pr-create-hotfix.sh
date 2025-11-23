@@ -18,8 +18,11 @@ git add "${FILES_DIR}/${FILE_NAME}.txt"
 git commit -m "${FILE_NAME}"
 
 git push -u origin "$BRANCH"
-gh pr create --fill
-gh pr merge --auto --merge
+gh pr create \
+  --base "$BRANCH" \
+  --head production \
+  --title "hotfix $(date +"%Y-%m-%dT%H:%M:%S")" \
+  --body ""
 
 git fetch --prune
 git switch production
