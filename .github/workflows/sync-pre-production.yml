@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: sync-pre-production
+  cancel-in-progress: true
+
 jobs:
   sync:
     runs-on: ubuntu-slim
