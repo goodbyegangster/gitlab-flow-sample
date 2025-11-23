@@ -3,4 +3,5 @@
 gh pr create \
   --base production \
   --head pre-production \
-  --title "release $(date +"%Y-%m-%dT%H:%M:%S")"
+  --title "release $(date +"%Y-%m-%dT%H:%M:%S")" \
+  --body ""
