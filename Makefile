@@ -12,3 +12,7 @@ pr-merge-main: ## feature ブランチを作成して main ブランチに merge
 .PHONY: pr-create-pre-production
 pr-create-pre-production: ## pre-production ブランチを production ブランチに merge する PR をつくる
 	@bash scripts/pr-create-pre-production.sh
+
+.PHONY: pr-create-hotfix
+pr-create-hotfix: ## hotfix ブランチを作成し production ブランチに merge する
+	@bash scripts/pr-create-hotfix.sh
