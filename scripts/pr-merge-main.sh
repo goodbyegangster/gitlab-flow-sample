@@ -26,6 +26,8 @@ git push -u origin "$BRANCH"
 gh pr create --fill
 gh pr merge --auto --squash --delete-branch
 
+git fetch --prune
+git switch pre-production
+git pull origin pre-production
 git switch main
 git pull origin main
-git fetch --prune
