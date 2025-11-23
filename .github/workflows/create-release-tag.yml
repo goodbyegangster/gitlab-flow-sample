@@ -12,10 +12,12 @@ concurrency:
 
 jobs:
   create-release:
-    # pre-production から production へのマージ時のみ実行
     if: |
       github.event.pull_request.merged == true &&
-      github.event.pull_request.head.ref == 'pre-production'
+      (
+        github.event.pull_request.head.ref == 'pre-production' ||
+        startsWith(github.event.pull_request.head.ref, 'hotfix/')
+      )
 
     runs-on: ubuntu-slim
     permissions:

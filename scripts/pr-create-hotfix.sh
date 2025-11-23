@@ -27,3 +27,5 @@ gh pr create \
 git fetch --prune
 git switch production
 git pull origin production
+
+git switch main
