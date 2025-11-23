@@ -6,6 +6,10 @@ on:
     branches:
       - production
 
+concurrency:
+  group: create-release-tag
+  cancel-in-progress: true
+
 jobs:
   create-release:
     # pre-production から production へのマージ時のみ実行
