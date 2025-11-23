@@ -19,8 +19,8 @@ git commit -m "${FILE_NAME}"
 
 git push -u origin "$BRANCH"
 gh pr create \
-  --base "$BRANCH" \
-  --head production \
+  --base production \
+  --head "$BRANCH" \
   --title "hotfix $(date +"%Y-%m-%dT%H:%M:%S")" \
   --body ""
 
