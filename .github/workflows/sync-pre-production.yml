@@ -1,0 +1,45 @@
+name: Sync Pre-Production with Main
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: sync-pre-production
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-slim
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fast-forward merge to pre-production
+        run: |
+          # Pre-production ブランチをチェックアウト
+          git fetch origin pre-production
+          git checkout pre-production
+
+          # Fast-forward merge を試行
+          git merge --ff-only origin/main
+
+          if [ $? -eq 0 ]; then
+            echo "✅ Fast-forward merge successful"
+            git push origin pre-production
+          else
+            echo "❌ Fast-forward merge failed"
+            echo "Pre-production has diverged from main"
+            exit 1
+          fi
