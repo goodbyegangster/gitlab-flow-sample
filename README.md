@@ -13,6 +13,49 @@
 | staging        | staging 環境向けコード                            | 永久     | main           | －               | －                            | staging        |                                                             |
 | development    | development 環境向けコード                        | 永久     | main           | －               | －                            | development    |                                                             |
 
+## Settings
+
+### General
+
+**Pull Requests**
+
+- Allow rebase merging Loading
+  - unchecked
+
+**Issues**
+
+- Auto-close issues with merged linked pull requests Loading
+  - unchecked
+
+### Rules/Rulesets
+
+**branch ruleset/main**
+
+- Enforcement status
+  - Active
+- Target branches
+  - main
+- Branch rules
+  - Restrict deletions
+
+**branch ruleset/pre-production**
+
+- Enforcement status
+  - Active
+- Target branches
+  - pre-production
+- Branch rules
+  - Restrict deletions
+
+**branch ruleset/production**
+
+- Enforcement status
+  - Active
+- Target branches
+  - production
+- Branch rules
+  - Restrict deletions
+
 ## コミットログの改ざん
 
 ```sh
